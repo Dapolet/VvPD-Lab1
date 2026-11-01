@@ -202,12 +202,20 @@ UTF-8, поэтому дополнительных действий не тре�
 
 ### 6.0. Репозиторий, origin и рабочая копия
 
-* `origin` — GitHub-репозиторий <https://github.com/Dapolet/VvPD-Lab1.git>; он выполняет
-  роль общего origin из п. 4.3 (вместо локального `origin.git`, по согласованию —
-  GitHub даёт ту же модель «общий origin + рабочие копии»).
-* рабочая копия (`dev`) — `C:\Users\Dapoleta\Projects\Git\VvPD-Lab1`, ветка `main`;
-* вторая рабочая копия (`second_dev`) — отдельный `git clone` того же origin,
-  имитирует второго разработчика (п. 4.7);
+* `origin` — локальный bare-репозиторий
+  `C:\Users\Dapoleta\Projects\Git\VvPD-Lab1-origin.git`, созданный командой
+  `git init --bare` (п. 4.3). В нём лежат все ветки (`main`, `feature/rust`) и тег
+  `v1.0.0`; проверка клонированием выполняется ниже.
+* публичное зеркало — GitHub <https://github.com/Dapolet/VvPD-Lab1.git>, remote
+  `github`. История дополнительно отправляется туда (`git push github main --tags`),
+  чтобы проект был доступен по ссылке и работал badge CI.
+* рабочая копия (`dev`) — существующий проект
+  `C:\Users\Dapoleta\Projects\Git\VvPD-Lab1`, ветка `main`; remote `origin` переключён
+  на локальный bare, вся история отправлена в него (`git push -u origin main`,
+  `git push origin feature/rust`, `git push origin v1.0.0`).
+* вторая рабочая копия (`second_dev`) — `C:\Users\Dapoleta\Projects\Git\VvPD-Lab1-second_dev`,
+  отдельный `git clone --no-hardlinks` того же локального origin; имитирует второго
+  разработчика (п. 4.7).
 * первые изменения добавлялись в индекс конкретными путями (`git add README.md`,
   `git add c/ cpp/`), `git add .` не использовался;
 * все коммиты имеют осмысленные сообщения (`Initialize`-подобных «1», «fix», «готово» нет),
@@ -233,6 +241,9 @@ git push -u origin feature/rust
 $ git branch -a
   feature/rust
 * main
+  remotes/github/HEAD -> github/main
+  remotes/github/feature/rust
+  remotes/github/main
   remotes/origin/HEAD -> origin/main
   remotes/origin/feature/rust
   remotes/origin/main
@@ -254,8 +265,8 @@ rust/main.rs
 
 ### 6.2. Merge conflict до разрешения
 
-Второй разработчик (отдельный клон репозитория) изменил ту же строку `Status`, что и
-основная ветка. После `git pull --no-rebase` Git остановил слияние:
+Второй разработчик (отдельный клон локального origin) изменил ту же строку `Status`,
+что и основная ветка. После `git pull --no-rebase` Git остановил слияние:
 
 ```text
 Auto-merging README.md
@@ -290,7 +301,7 @@ git push origin main
 ```
 
 Второй клон после `git pull` получил уже разрешённый вариант строки — конфликт
-закрыт для всех участников:
+закрыт для всех участников (вывод на момент разрешения конфликта):
 
 ```text
 $ git -C second_dev pull origin main
@@ -302,17 +313,20 @@ $ grep Status second_dev/README.md
 **Status:** checked by second developer, ready for v1.0.0
 ```
 
-Позже эта строка ещё раз менялась вручную через веб-интерфейс GitHub
-(коммит `fab0a45 Update README.md`, текущее значение — `Working i guess?`);
-на момент разрешения конфликта итоговый текст был именно таким, как показано выше.
+Позже эта строка ещё раз менялась вручную через веб-интерфейс GitHub: коммит
+`fab0a45` поставил `Working i guess?`, а коммит `303319d` — актуальное значение
+`checked, ready for v1.0.0`; на момент разрешения конфликта итоговый текст был именно
+таким, как показано выше.
 
 ### 6.4. История, теги, состояние
 
-Финальный вывод `git log --oneline --graph --all --decorate` на момент последней
-фиксации отчёта; коммит с самой этой правкой отчёта добавляется сверху:
+Финальный вывод `git log --oneline --graph --all --decorate` (без коммита с самой этой
+правкой отчёта, который добавляется сверху):
 
 ```text
-* fe07426 (HEAD -> main, origin/main, origin/HEAD) Clarify tool versions and checkmark language cards in report
+* 303319d Update README.md
+* d217e45 Fix assembler rows in README and final git output in report
+* fe07426 Clarify tool versions and checkmark language cards in report
 * e70c07e Fix Prolog language value and refresh Git evidence in report
 * 2769bb5 Document feature branch merge evidence in report
 * 368009f Add macOS arm64 assembler variant and run CI only on manual dispatch
@@ -326,7 +340,7 @@ $ grep Status second_dev/README.md
 |/
 *   7bc3cd1 Merge feature/rust into main
 |\
-| * 06c7b9c (origin/feature/rust, feature/rust) Add Rust implementation
+| * 06c7b9c (origin/feature/rust, github/feature/rust, feature/rust) Add Rust implementation
 |/
 * 016eb62 Add script that builds and runs every implementation
 * db93877 Add Bash, Prolog and assembler implementations
@@ -366,7 +380,18 @@ $ git tag
 v1.0.0
 
 $ git remote -v
-origin  https://github.com/Dapolet/VvPD-Lab1.git (fetch)
-origin  https://github.com/Dapolet/VvPD-Lab1.git (push)
+github  https://github.com/Dapolet/VvPD-Lab1.git (fetch)
+github  https://github.com/Dapolet/VvPD-Lab1.git (push)
+origin  C:\Users\Dapoleta\Projects\Git\VvPD-Lab1-origin.git (fetch)
+origin  C:\Users\Dapoleta\Projects\Git\VvPD-Lab1-origin.git (push)
+```
+
+`origin` — локальный bare-репозиторий из п. 4.3 (основной), `github` — публичное
+зеркало. Вторая рабочая копия `VvPD-Lab1-second_dev` клонирована именно из `origin`:
+
+```text
+$ git -C ..\VvPD-Lab1-second_dev remote -v
+origin  C:\Users\Dapoleta\Projects\Git\VvPD-Lab1-origin.git (fetch)
+origin  C:\Users\Dapoleta\Projects\Git\VvPD-Lab1-origin.git (push)
 ```
 
