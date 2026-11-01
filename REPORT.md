@@ -209,7 +209,34 @@ git add rust/
 git commit -m "Add Rust implementation"
 git switch main
 git merge --no-ff -m "Merge feature/rust into main" feature/rust
+git push -u origin feature/rust
 ```
+
+Реализация появилась в `main`, коммит ветки виден в истории, сама ветка отправлена
+в origin:
+
+```text
+$ git branch -a
+  feature/rust
+* main
+  remotes/origin/HEAD -> origin/main
+  remotes/origin/feature/rust
+  remotes/origin/main
+
+$ git log --oneline --graph --all --decorate
+*   7bc3cd1 (HEAD -> main) Merge feature/rust into main
+|\
+| * 06c7b9c (feature/rust) Add Rust implementation
+|/
+* 016eb62 Add script that builds and runs every implementation
+
+$ git ls-tree --name-only main -- rust/
+rust/main.rs
+```
+
+Проверка вливания: `git merge-base --is-ancestor feature/rust main` завершается с
+кодом 0, то есть feature-ветка полностью содержится в `main`, а `rust/main.rs`
+присутствует в дереве основной ветки.
 
 ### 6.2. Merge conflict до разрешения
 
