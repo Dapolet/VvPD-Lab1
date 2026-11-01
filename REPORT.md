@@ -199,6 +199,19 @@ UTF-8, поэтому дополнительных действий не тре�
 
 ## 6. Работа с Git
 
+### 6.0. Репозиторий, origin и рабочая копия
+
+* `origin` — GitHub-репозиторий <https://github.com/Dapolet/VvPD-Lab1.git>; он выполняет
+  роль общего origin из п. 4.3 (вместо локального `origin.git`, по согласованию —
+  GitHub даёт ту же модель «общий origin + рабочие копии»).
+* рабочая копия (`dev`) — `C:\Users\Dapoleta\Projects\Git\VvPD-Lab1`, ветка `main`;
+* вторая рабочая копия (`second_dev`) — отдельный `git clone` того же origin,
+  имитирует второго разработчика (п. 4.7);
+* первые изменения добавлялись в индекс конкретными путями (`git add README.md`,
+  `git add c/ cpp/`), `git add .` не использовался;
+* все коммиты имеют осмысленные сообщения (`Initialize`-подобных «1», «fix», «готово» нет),
+  всего коммитов в `main` — 20.
+
 ### 6.1. Ветка feature/rust и слияние
 
 Номер в списке 15, `15 mod 5 = 0`, поэтому отдельная feature-ветка — Rust:
@@ -276,19 +289,41 @@ git push origin main
 ```
 
 Второй клон после `git pull` получил уже разрешённый вариант строки — конфликт
-закрыт для всех участников.
+закрыт для всех участников:
+
+```text
+$ git -C second_dev pull origin main
+Updating 72e8093..ee3a3da
+Fast-forward
+ README.md | 2 +-
+
+$ grep Status second_dev/README.md
+**Status:** checked by second developer, ready for v1.0.0
+```
+
+Позже эта строка ещё раз менялась вручную через веб-интерфейс GitHub
+(коммит `fab0a45 Update README.md`, текущее значение — `Working i guess?`);
+на момент разрешения конфликта итоговый текст был именно таким, как показано выше.
 
 ### 6.4. История, теги, состояние
 
+Финальный вывод `git log --oneline --graph --all --decorate` (перед коммитом с правками
+этого отчёта; сам отчёт добавлен сверху):
+
 ```text
-*   ee3a3da (origin/main, origin/HEAD) Merge second developer README changes and resolve status conflict
+* 2769bb5 (HEAD -> main, origin/main, origin/HEAD) Document feature branch merge evidence in report
+* 368009f Add macOS arm64 assembler variant and run CI only on manual dispatch
+* fab0a45 Update README.md
+* 085a041 Add GitHub Actions workflow that verifies all implementations
+* 41227ba (tag: v1.0.0) Complete documentation and release files
+*   ee3a3da Merge second developer README changes and resolve status conflict
 |\
 | * 72e8093 Update README status after review
 * | 1b4c697 Set project status to ready for v1.0.0
 |/
 *   7bc3cd1 Merge feature/rust into main
 |\
-| * 06c7b9c (feature/rust) Add Rust implementation
+| * 06c7b9c (origin/feature/rust, feature/rust) Add Rust implementation
 |/
 * 016eb62 Add script that builds and runs every implementation
 * db93877 Add Bash, Prolog and assembler implementations
@@ -302,11 +337,18 @@ git push origin main
 ```
 
 Граф содержит обе точки слияния: `feature/rust` (коммит `06c7b9c`) и merge-конфликт
-второго разработчика (`72e8093`, `1b4c697`). Поверх этого графа добавлен релизный
-коммит `Complete documentation and release files` (README.md, CHANGELOG.md,
-REPORT.md) и на него поставлен аннотированный тег `v1.0.0`, поэтому полный вывод
-`git log --oneline --graph --all --decorate` дополнительно содержит строку
-`(HEAD -> main, tag: v1.0.0)`.
+второго разработчика (`72e8093`, `1b4c697`). Тег `v1.0.0` стоит на релизном коммите
+`41227ba` (`Complete documentation and release files`), после него добавлены только
+служебные коммиты (CI, ARM64-вариант assembler, уточнения отчёта), не меняющие состав
+версии 1.0.0. Тег аннотированный:
+
+```text
+$ git tag -n1
+v1.0.0          VPD Lab 01 release
+
+$ git cat-file -t v1.0.0
+tag
+```
 
 ### 6.5. Финальные `git status` и теги
 

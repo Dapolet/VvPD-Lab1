@@ -3,6 +3,9 @@
 % Исходные данные студента — факт.
 student('Полетаев Дмитрий', 'Poletaev Dmitriy', 15, 'М3О-119БВ-26').
 
+% Название языка — тоже отдельный факт, а не литерал в строке вывода.
+language_name('Prolog').
+
 % Правило 1: принадлежность к группе (имя может быть русским или латинским).
 group_of(Name, Group) :-
     student(Name, _, _, Group).
@@ -29,6 +32,7 @@ student_id(Group, Number, Id) :-
 
 main :-
     student(NameRu, NameEn, Number, Group),
+    language_name(Language),
     % Запросы к правилам на основе факта.
     group_of(NameEn, Group),
     control_value(NameEn, Control),
@@ -38,7 +42,7 @@ main :-
     format("Привет, ~w! Это ~w, номер ~w, группа ~w!~n",
            [304, NameRu, Number, Group]),
     format("Student ID: ~w | Language: ~w | Control: ~w~n",
-           [Id, 'Prolog', Control]),
+           [Id, Language, Control]),
     format("Members of ~w: ", [Group]),
     forall(group_of(Member, Group), format("~w; ", [Member])),
     nl.
