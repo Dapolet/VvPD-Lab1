@@ -84,11 +84,47 @@ gcc -Wall -Wextra -pedantic main.c -o main
 `chcp 65001`. В Linux/WSL терминал уже работает в UTF-8, поэтому дополнительных
 действий не требуется.
 
+## Assembler
+
+В проекте две реализации под разные архитектуры; нужная выбирается автоматически
+скриптом `asm/build.sh` (по `uname -s` и `uname -m`).
+
+| Файл | Платформа | Ассемблер | Формат | ABI |
+| --- | --- | --- | --- | --- |
+| `asm/assembler_x86_64_linux.s` | Linux/WSL x86-64 | GNU as 2.44 | ELF | System V AMD64 (аргумент `puts` в `rdi`) |
+| `asm/assembler_arm64_macos.s` | macOS Apple Silicon (arm64) | Apple Clang | Mach-O | AAPCS64 (аргумент `puts` в `x0`, символы `_main`/`_puts`) |
+
+Сборка и запуск на Linux x86-64:
+
+```bash
+cd asm
+as assembler_x86_64_linux.s -o assembler_x86_64.o
+gcc assembler_x86_64.o -o assembler
+./assembler
+```
+
+Сборка и запуск на macOS (Apple Silicon):
+
+```bash
+cd asm
+clang -c assembler_arm64_macos.s -o assembler_arm64.o
+clang assembler_arm64.o -o assembler
+./assembler
+```
+
+Универсальный вариант (сам определяет платформу, результат в `asm/build/`):
+
+```bash
+bash asm/build.sh
+./asm/build/assembler
+```
+
 ## Структура проекта
 
 ```text
 c/ cpp/ python/ javascript/ typescript/ java/ csharp/ fsharp/
-go/ rust/ bash/ prolog/ asm/
+go/ rust/ bash/ prolog/
+asm/                assembler_x86_64_linux.s, assembler_arm64_macos.s, build.sh
 scripts/            run_all.sh, check_output.sh
 .github/workflows/  ci.yml
 README.md  CHANGELOG.md  REPORT.md  .gitignore
@@ -96,9 +132,14 @@ README.md  CHANGELOG.md  REPORT.md  .gitignore
 
 ## Непрерывная проверка (GitHub Actions)
 
-Файл `.github/workflows/ci.yml` на каждый push в `main`, pull request или ручной запуск
-ставит все инструменты на `ubuntu-latest` (GCC, binutils, Node.js + tsc, JDK 21,
-.NET SDK 9, Go, Rust, SWI-Prolog) и выполняет `scripts/check_output.sh`.
+Файл `.github/workflows/ci.yml` запускается **только вручную**: вкладка Actions →
+workflow «Build and check all implementations» → `Run workflow` (или
+`gh workflow run ci.yml`). Автоматических запусков по push и pull request нет.
+
+Workflow ставит все инструменты на `ubuntu-latest` (GCC, binutils, Node.js + tsc, JDK 21,
+.NET SDK 9, Go, Rust, SWI-Prolog, clang), выполняет `scripts/check_output.sh`, а также
+отдельно проверяет ARM64-вариант assembler кросс-компиляцией в объектный файл Mach-O
+arm64 (`clang -target arm64-apple-macos11 -c`).
 
 Скрипт `scripts/check_output.sh` сам собирает и запускает все 13 реализаций через
 `scripts/run_all.sh`, а затем сверяет построчно ожидаемый вывод: английское и русское

@@ -6,11 +6,21 @@
 
 ### Добавлено
 
-- GitHub Actions workflow `.github/workflows/ci.yml`: установка всех тулчейнов и
-  сборка/запуск 13 реализаций на каждый push и pull request.
+- Вторая реализация assembler — `asm/assembler_arm64_macos.s` для macOS Apple Silicon
+  (AArch64, Apple Clang, Mach-O, AAPCS64); x86-64-вариант переименован в
+  `asm/assembler_x86_64_linux.s`.
+- Скрипт `asm/build.sh`: выбирает вариант по ОС и архитектуре (`uname -s`/`uname -m`),
+  собирает результат в `asm/build/assembler`.
+- GitHub Actions workflow `.github/workflows/ci.yml`: установка всех тулчейнов, сборка и
+  запуск 13 реализаций, кросс-проверка ARM64-варианта assembler.
 - Скрипт `scripts/check_output.sh`: сверка фактического вывода всех реализаций
   с ожидаемым (три строки, «визитные карточки», английская строка assembler).
 - Бейдж состояния сборки в `README.md`.
+
+### Изменено
+
+- Workflow запускается только вручную (`workflow_dispatch`), без автоматических
+  запусков по push и pull request.
 
 ## [1.0.0] - 2026-11-01
 

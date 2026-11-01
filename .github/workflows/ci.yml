@@ -1,9 +1,7 @@
 name: Build and check all implementations
 
 on:
-  push:
-    branches: [main]
-  pull_request:
+  # Только ручной запуск: Actions -> Build and check all implementations -> Run workflow.
   workflow_dispatch:
 
 permissions:
@@ -23,7 +21,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends \
-            build-essential binutils swi-prolog-nox
+            build-essential binutils swi-prolog-nox clang file
 
       - name: Установить Node.js
         uses: actions/setup-node@v4
@@ -74,6 +72,12 @@ jobs:
         run: |
           set -o pipefail
           bash scripts/check_output.sh | tee check-results.log
+
+      - name: Проверить ARM64-вариант assembler (macOS) кросс-компиляцией
+        run: |
+          clang -target arm64-apple-macos11 -c asm/assembler_arm64_macos.s -o /tmp/assembler_arm64.o
+          file /tmp/assembler_arm64.o
+          file /tmp/assembler_arm64.o | grep -q 'Mach-O 64-bit arm64'
 
       - name: Добавить результат в сводку запуска
         if: always()

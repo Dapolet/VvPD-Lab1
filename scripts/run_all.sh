@@ -47,5 +47,5 @@ section "Bash"
 section "Prolog"
 (cd prolog && swipl -q -s main.pl -g main -t halt)
 
-section "Assembler (x86-64, GAS)"
-(cd asm && as assembler.s -o assembler.o && gcc assembler.o -o assembler && ./assembler)
+section "Assembler"
+(cd asm && bash build.sh && ./build/assembler)

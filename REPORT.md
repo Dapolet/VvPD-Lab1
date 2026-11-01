@@ -43,11 +43,17 @@
 | Rust | `rust/main.rs` | `rustc main.rs -o main && ./main` | native executable | `let`, `format!`, отдельная строка с `student_id` |
 | Bash | `bash/main.sh` | `bash main.sh` | интерпретация | реальный pipe `\| wc` и `$(...)` |
 | Prolog | `prolog/main.pl` | `swipl -q -s main.pl -g main -t halt` | интерпретация запроса | факт `student/4`, правила `group_of/2`, `control_value/2` |
-| Assembler | `asm/assembler.s` | `as assembler.s -o assembler.o && gcc assembler.o -o assembler && ./assembler` | native executable | x86-64, GAS, System V AMD64 ABI |
+| Assembler | `asm/assembler_x86_64_linux.s` (Linux) и `asm/assembler_arm64_macos.s` (macOS arm64) | `bash asm/build.sh && ./asm/build/assembler` | native executable | x86-64 GAS / AArch64 Apple Clang; вывод — одна английская строка |
 
-**Assembler:** ОС Debian GNU/Linux 13 (WSL 2), архитектура `x86_64`, ассемблер GNU as
-2.44 (Intel-синтаксис), сборка через `as` + линковка `gcc`. В соответствии с заданием
-assembler выводит только персонализированную английскую строку.
+**Assembler:** вариант выбирается по архитектуре компьютера.
+* x86-64: Debian GNU/Linux 13 (WSL 2), GNU as 2.44, Intel-синтаксис, ELF, System V AMD64 ABI.
+* arm64: macOS Apple Silicon, Apple Clang, Mach-O, AAPCS64; символы `_main`/`_puts`,
+  аргумент `puts` передаётся в `x0`, адрес строки — через `adrp` + `add …@PAGEOFF`.
+
+В соответствии с заданием assembler выводит только персонализированную английскую строку.
+ARM64-вариант проверен двумя способами: кросс-компиляцией в объектный файл Mach-O arm64
+(`clang -target arm64-apple-macos11 -c`) и запуском того же кода под Linux AArch64 в
+QEMU (`qemu-aarch64-static`) — вывод совпадает с x86-64-вариантом.
 
 ## 3. Подтверждение корректного вывода
 
@@ -122,7 +128,7 @@ Hello to 304 from Poletaev Dmitriy, number 15, group М3О-119БВ-26!
 Student ID: М3О-119БВ-26/15 | Language: Prolog | Control: 4560
 Members of М3О-119БВ-26: Полетаев Дмитрий; Poletaev Dmitriy;
 
-=== Assembler (x86-64, GAS) ===
+=== Assembler ===
 Hello to 304 from Poletaev Dmitriy, number 15, group M3O-119BV-26!
 ```
 

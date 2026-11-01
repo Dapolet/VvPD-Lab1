@@ -3,8 +3,7 @@ c/main
 c/*.o
 cpp/main
 cpp/*.o
-asm/assembler
-asm/*.o
+asm/build/
 
 # Java: байт-код воспроизводится из Main.java
 *.class

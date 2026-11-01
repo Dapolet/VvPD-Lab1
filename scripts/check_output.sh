@@ -73,7 +73,7 @@ check_lang "Prolog" "Prolog"
 
 # Для assembler по заданию достаточно одной английской строки.
 ASM_EXPECTED="Hello to 304 from ${NAME_EN}, number ${NUMBER}, group M3O-119BV-26!"
-if grep -Fqx -- "$ASM_EXPECTED" <<<"$(section_output "Assembler (x86-64, GAS)")"; then
+if grep -Fqx -- "$ASM_EXPECTED" <<<"$(section_output "Assembler")"; then
     echo "OK    [Assembler]"
 else
     echo "ОШИБКА [Assembler]: нет строки: $ASM_EXPECTED"
