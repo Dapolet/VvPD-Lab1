@@ -6,7 +6,7 @@
 **Группа:** М3О-119БВ-26  
 **Номер в списке:** 15  
 **ОС и окружение:** Windows 11 + Debian GNU/Linux 13 (WSL 2), сборка и запуск выполняются в WSL.  
-**Status:** checked by second developer, ready for v1.0.0
+**Status:** Working i guess?
 
 ## Цель проекта
 
@@ -83,19 +83,6 @@ gcc -Wall -Wextra -pedantic main.c -o main
 `SetConsoleCP(CP_UTF8)` и `SetConsoleOutputCP(CP_UTF8)`; альтернатива для сессии —
 `chcp 65001`. В Linux/WSL терминал уже работает в UTF-8, поэтому дополнительных
 действий не требуется.
-
-## Assembler
-
-* ОС: Debian GNU/Linux 13 (WSL 2), архитектура `x86_64`;
-* ассемблер: GNU Assembler (GAS) 2.44, Intel-синтаксис, System V AMD64 ABI;
-* сборка и запуск:
-
-```bash
-cd asm
-as assembler.s -o assembler.o
-gcc assembler.o -o assembler
-./assembler
-```
 
 ## Структура проекта
 
