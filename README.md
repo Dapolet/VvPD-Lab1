@@ -1,9 +1,9 @@
 # VvPD Lab 01 — языки программирования, терминал и Git
 
-**Студент:** Полетаев Дмитрий
-**Группа:** М3О-119БВ-26
-**Номер в списке:** 15
-**ОС и окружение:** Windows 11 + Debian GNU/Linux 13 (WSL 2), сборка и запуск выполняются в WSL.
+**Студент:** Полетаев Дмитрий  
+**Группа:** М3О-119БВ-26  
+**Номер в списке:** 15  
+**ОС и окружение:** Windows 11 + Debian GNU/Linux 13 (WSL 2), сборка и запуск выполняются в WSL.  
 **Status:** checked by second developer, ready for v1.0.0
 
 ## Цель проекта
@@ -35,21 +35,23 @@
 | --- | --- | --- | --- |
 | C | gcc 14.2.0 | `gcc -Wall -Wextra -pedantic main.c -o main && ./main` | native executable |
 | C++ | g++ 14.2.0 | `g++ -Wall -Wextra -pedantic main.cpp -o main && ./main` | native executable |
-| Python | Python 3.13 | `python3 main.py` | скрипт (интерпретация) |
-| JavaScript | Node.js 20 | `node main.js` | скрипт (JIT) |
-| TypeScript | tsc 5.x | `tsc main.ts --outDir dist && node dist/main.js` | транспиляция в JS |
-| Java | OpenJDK 21 | `javac Main.java && java Main` | bytecode `.class` |
-| C# | .NET SDK 9.0 | `dotnet run` | IL + JIT |
-| F# | .NET SDK 9.0 | `dotnet run` | IL + JIT |
-| Go | go 1.24 | `go run main.go` | native executable |
-| Rust | rustc 1.85 | `rustc main.rs -o main && ./main` | native executable |
-| Bash | GNU bash 5.2 | `bash main.sh` | интерпретация |
-| Prolog | SWI-Prolog 9.x | `swipl -q -s main.pl -g main -t halt` | интерпретация запроса |
+| Python | Python 3.13.5 | `python3 main.py` | скрипт (интерпретация) |
+| JavaScript | Node.js 20.19.2 | `node main.js` | скрипт (JIT) |
+| TypeScript | tsc 7.0.2 | `tsc main.ts --outDir dist && node dist/main.js` | транспиляция в JS |
+| Java | OpenJDK 21.0.13 | `javac Main.java && java Main` | bytecode `.class` |
+| C# | .NET SDK 9.0.320 | `dotnet run` | IL + JIT |
+| F# | .NET SDK 9.0.320 | `dotnet run` | IL + JIT |
+| Go | go 1.24.4 | `go run main.go` | native executable |
+| Rust | rustc 1.85.1 | `rustc main.rs -o main && ./main` | native executable |
+| Bash | GNU bash 5.2.37 | `bash main.sh` | интерпретация |
+| Prolog | SWI-Prolog 9.2.9 | `swipl -q -s main.pl -g main -t halt` | интерпретация запроса |
 | Assembler | GNU as 2.44 | `as assembler.s -o assembler.o && gcc assembler.o -o assembler` | native executable |
 
 Имя файла каждой реализации — `main.<ext>` в каталоге языка (например, `c/main.c`);
 исключения: `java/Main.java`, `csharp/Program.cs` + `csharp/LabCSharp.csproj`,
 `fsharp/Program.fs` + `fsharp/LabFSharp.fsproj`, `asm/assembler.s`.
+
+Собрать и запустить всё сразу: `bash scripts/run_all.sh`.
 
 ## Ожидаемый вывод
 
