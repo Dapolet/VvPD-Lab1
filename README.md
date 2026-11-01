@@ -4,7 +4,7 @@
 **Группа:** М3О-119БВ-26
 **Номер в списке:** 15
 **ОС и окружение:** Windows 11 + Debian GNU/Linux 13 (WSL 2), сборка и запуск выполняются в WSL.
-**Status:** ready for v1.0.0
+**Status:** checked by second developer, ready for v1.0.0
 
 ## Цель проекта
 
