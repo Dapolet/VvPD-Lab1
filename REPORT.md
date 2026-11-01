@@ -31,19 +31,19 @@
 
 | Язык | Файл | Команда сборки/запуска | Тип результата | «Визитная карточка» |
 | --- | --- | --- | --- | --- |
-| C | `c/main.c` | `gcc -Wall -Wextra -pedantic main.c -o main && ./main` | native executable (ELF) | `printf` со спецификаторами, `%02d` для номера |
-| C++ | `cpp/main.cpp` | `g++ -Wall -Wextra -pedantic main.cpp -o main && ./main` | native executable | `std::cout`, `setw`/`setfill` |
-| Python | `python/main.py` | `python3 main.py` | скрипт, интерпретация | f-строки + подсчёт слов в имени |
-| JavaScript | `javascript/main.js` | `node main.js` | скрипт, JIT | template literals + длина имени |
-| TypeScript | `typescript/main.ts` | `tsc main.ts --outDir dist && node dist/main.js` | транспиляция в JS, затем запуск | `interface`, типизированный объект |
-| Java | `java/Main.java` | `javac Main.java && java Main` | байт-код `.class` + JVM | `record`, `System.out.printf`, `javap -c` |
-| C# | `csharp/Program.cs` | `dotnet run` | IL + JIT | интерполяция `$"..."`, `record` |
-| F# | `fsharp/Program.fs` | `dotnet run` | IL + JIT | конвейер `\|>`: слова → длины → сумма |
-| Go | `go/main.go` | `go run main.go` | native executable | `fmt.Printf`, `studentID :=` |
-| Rust | `rust/main.rs` | `rustc main.rs -o main && ./main` | native executable | `let`, `format!`, отдельная строка с `student_id` |
-| Bash | `bash/main.sh` | `bash main.sh` | интерпретация | реальный pipe `\| wc` и `$(...)` |
-| Prolog | `prolog/main.pl` | `swipl -q -s main.pl -g main -t halt` | интерпретация запроса | факт `student/4`, правила `group_of/2`, `control_value/2` |
-| Assembler | `asm/assembler_x86_64_linux.s` (Linux) и `asm/assembler_arm64_macos.s` (macOS arm64) | `bash asm/build.sh && ./asm/build/assembler` | native executable | x86-64 GAS / AArch64 Apple Clang; вывод — одна английская строка |
+| C | `c/main.c` | `gcc -Wall -Wextra -pedantic main.c -o main && ./main` | native executable (ELF) | да — `printf` со спецификаторами, `%02d` для номера |
+| C++ | `cpp/main.cpp` | `g++ -Wall -Wextra -pedantic main.cpp -o main && ./main` | native executable | да — `std::cout`, `setw`/`setfill` |
+| Python | `python/main.py` | `python3 main.py` | скрипт, интерпретация | да — f-строки + подсчёт слов в имени |
+| JavaScript | `javascript/main.js` | `node main.js` | скрипт, JIT | да — template literals + длина имени |
+| TypeScript | `typescript/main.ts` | `tsc main.ts --outDir dist && node dist/main.js` | транспиляция в JS, затем запуск | да — `interface`, типизированный объект |
+| Java | `java/Main.java` | `javac Main.java && java Main` | байт-код `.class` + JVM | да — `record`, `System.out.printf`, `javap -c` |
+| C# | `csharp/Program.cs` | `dotnet run` | IL + JIT | да — интерполяция `$"..."`, `record` |
+| F# | `fsharp/Program.fs` | `dotnet run` | IL + JIT | да — конвейер `\|>`: слова → длины → сумма |
+| Go | `go/main.go` | `go run main.go` | native executable | да — `fmt.Printf`, `studentID :=` |
+| Rust | `rust/main.rs` | `rustc main.rs -o main && ./main` | native executable | да — `let`, `format!`, отдельная строка с `student_id` |
+| Bash | `bash/main.sh` | `bash main.sh` | интерпретация | да — реальный pipe `\| wc` и `$(...)` |
+| Prolog | `prolog/main.pl` | `swipl -q -s main.pl -g main -t halt` | интерпретация запроса | да — факт `student/4`, правила `group_of/2`, `control_value/2` |
+| Assembler | `asm/assembler_x86_64_linux.s` (Linux) и `asm/assembler_arm64_macos.s` (macOS arm64) | `bash asm/build.sh && ./asm/build/assembler` | native executable | да — x86-64 GAS / AArch64 Apple Clang; одна английская строка |
 
 **Assembler:** вариант выбирается по архитектуре компьютера.
 * x86-64: Debian GNU/Linux 13 (WSL 2), GNU as 2.44, Intel-синтаксис, ELF, System V AMD64 ABI.
