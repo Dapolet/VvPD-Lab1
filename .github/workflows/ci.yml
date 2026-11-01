@@ -1,0 +1,86 @@
+name: Build and check all implementations
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: Сборка и проверка 13 реализаций
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Установить системные инструменты (C/C++, assembler, Prolog)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            build-essential binutils swi-prolog-nox
+
+      - name: Установить Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Установить компилятор TypeScript
+        run: npm install --global typescript@7.0.2
+
+      - name: Установить JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Установить .NET SDK 9
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Установить Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.24'
+
+      - name: Подготовить Rust
+        run: |
+          rustup toolchain install stable --profile minimal
+          rustup default stable
+
+      - name: Показать версии инструментов
+        run: |
+          gcc --version | head -1
+          g++ --version | head -1
+          as --version | head -1
+          python3 -V
+          node -v
+          tsc --version
+          java -version 2>&1 | head -1
+          dotnet --version
+          go version
+          rustc --version
+          bash --version | head -1
+          swipl --version
+          uname -m
+
+      - name: Собрать, запустить и сверить вывод всех реализаций
+        run: |
+          set -o pipefail
+          bash scripts/check_output.sh | tee check-results.log
+
+      - name: Добавить результат в сводку запуска
+        if: always()
+        run: |
+          {
+            echo '## Результат проверки реализаций'
+            echo '```text'
+            tail -n 30 check-results.log 2>/dev/null || echo 'лог проверки недоступен'
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"

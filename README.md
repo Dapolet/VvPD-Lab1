@@ -1,5 +1,7 @@
 # VvPD Lab 01 — языки программирования, терминал и Git
 
+[![Build and check all implementations](https://github.com/Dapolet/VvPD-Lab1/actions/workflows/ci.yml/badge.svg)](https://github.com/Dapolet/VvPD-Lab1/actions/workflows/ci.yml)
+
 **Студент:** Полетаев Дмитрий  
 **Группа:** М3О-119БВ-26  
 **Номер в списке:** 15  
@@ -100,5 +102,26 @@ gcc assembler.o -o assembler
 ```text
 c/ cpp/ python/ javascript/ typescript/ java/ csharp/ fsharp/
 go/ rust/ bash/ prolog/ asm/
-README.md  CHANGELOG.md  .gitignore
+scripts/            run_all.sh, check_output.sh
+.github/workflows/  ci.yml
+README.md  CHANGELOG.md  REPORT.md  .gitignore
 ```
+
+## Непрерывная проверка (GitHub Actions)
+
+Файл `.github/workflows/ci.yml` на каждый push в `main`, pull request или ручной запуск
+ставит все инструменты на `ubuntu-latest` (GCC, binutils, Node.js + tsc, JDK 21,
+.NET SDK 9, Go, Rust, SWI-Prolog) и выполняет `scripts/check_output.sh`.
+
+Скрипт `scripts/check_output.sh` сам собирает и запускает все 13 реализаций через
+`scripts/run_all.sh`, а затем сверяет построчно ожидаемый вывод: английское и русское
+приветствие, строку `Student ID … | Language … | Control …`, а также наличие
+«визитной карточки» у Python, JavaScript, F#, Rust, Bash и Prolog. Для assembler
+проверяется только английская строка. Любое расхождение завершает job с ошибкой.
+
+Ту же проверку можно выполнить локально:
+
+```bash
+bash scripts/check_output.sh
+```
+
