@@ -71,14 +71,8 @@ check_lang "Rust" "Rust"
 check_lang "Bash" "Bash"
 check_lang "Prolog" "Prolog"
 
-# Для assembler по заданию достаточно одной английской строки.
-ASM_EXPECTED="Hello to 304 from ${NAME_EN}, number ${NUMBER}, group M3O-119BV-26!"
-if grep -Fqx -- "$ASM_EXPECTED" <<<"$(section_output "Assembler")"; then
-    echo "OK    [Assembler]"
-else
-    echo "ОШИБКА [Assembler]: нет строки: $ASM_EXPECTED"
-    failures=$((failures + 1))
-fi
+# Assembler печатает те же три строки, что и остальные реализации.
+check_lang "Assembler" "Assembler"
 
 # Визитные карточки: проверяем, что дополнительный вывод действительно есть.
 check_extra() {
