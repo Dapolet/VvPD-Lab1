@@ -4,6 +4,11 @@
 
 ## [Unreleased]
 
+## [1.0.1] - 2026-11-01
+
+Патч-релиз: вторая реализация assembler, автоматическая сверка вывода и
+ручной CI-workflow.
+
 ### Добавлено
 
 - Вторая реализация assembler — `asm/assembler_arm64_macos.s` для macOS Apple Silicon
