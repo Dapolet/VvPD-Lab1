@@ -29,7 +29,7 @@
 10. Rust
 11. Bash
 12. Prolog
-13. Assembler (x86-64)
+13. Assembler (x86-64 или ARM64 — по архитектуре компьютера)
 
 ## Инструменты и команды
 
@@ -47,11 +47,13 @@
 | Rust | rustc 1.85.1 | `rustc main.rs -o main && ./main` | native executable |
 | Bash | GNU bash 5.2.37 | `bash main.sh` | интерпретация |
 | Prolog | SWI-Prolog 9.2.9 | `swipl -q -s main.pl -g main -t halt` | интерпретация запроса |
-| Assembler | GNU as 2.44 | `as assembler.s -o assembler.o && gcc assembler.o -o assembler` | native executable |
+| Assembler (x86-64) | GNU as 2.44 | `as assembler_x86_64_linux.s -o assembler.o && gcc assembler.o -o assembler && ./assembler` | native executable (ELF) |
+| Assembler (ARM64) | Apple Clang | `clang -c assembler_arm64_macos.s -o assembler.o && clang assembler.o -o assembler && ./assembler` | native executable (Mach-O) |
 
 Имя файла каждой реализации — `main.<ext>` в каталоге языка (например, `c/main.c`);
 исключения: `java/Main.java`, `csharp/Program.cs` + `csharp/LabCSharp.csproj`,
-`fsharp/Program.fs` + `fsharp/LabFSharp.fsproj`, `asm/assembler.s`.
+`fsharp/Program.fs` + `fsharp/LabFSharp.fsproj`, `asm/assembler_x86_64_linux.s`,
+`asm/assembler_arm64_macos.s`.
 
 Собрать и запустить всё сразу: `bash scripts/run_all.sh`.
 

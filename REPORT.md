@@ -25,6 +25,7 @@
 | Rust (rustc) | 1.85.1 |
 | GNU bash | 5.2.37 |
 | SWI-Prolog | 9.2.9 for x86_64-linux |
+| clang (для проверки ARM64-варианта) | 19.1.7 |
 | Git | 2.47.3 |
 
 ## 2. Сводная таблица по 13 языкам
@@ -210,7 +211,7 @@ UTF-8, поэтому дополнительных действий не тре�
 * первые изменения добавлялись в индекс конкретными путями (`git add README.md`,
   `git add c/ cpp/`), `git add .` не использовался;
 * все коммиты имеют осмысленные сообщения (`Initialize`-подобных «1», «fix», «готово» нет),
-  всего коммитов в `main` — 20.
+  всего коммитов в `main` — больше 20 (минимальное требование задания — 6).
 
 ### 6.1. Ветка feature/rust и слияние
 
@@ -307,11 +308,13 @@ $ grep Status second_dev/README.md
 
 ### 6.4. История, теги, состояние
 
-Финальный вывод `git log --oneline --graph --all --decorate` (перед коммитом с правками
-этого отчёта; сам отчёт добавлен сверху):
+Финальный вывод `git log --oneline --graph --all --decorate` на момент последней
+фиксации отчёта; коммит с самой этой правкой отчёта добавляется сверху:
 
 ```text
-* 2769bb5 (HEAD -> main, origin/main, origin/HEAD) Document feature branch merge evidence in report
+* fe07426 (HEAD -> main, origin/main, origin/HEAD) Clarify tool versions and checkmark language cards in report
+* e70c07e Fix Prolog language value and refresh Git evidence in report
+* 2769bb5 Document feature branch merge evidence in report
 * 368009f Add macOS arm64 assembler variant and run CI only on manual dispatch
 * fab0a45 Update README.md
 * 085a041 Add GitHub Actions workflow that verifies all implementations

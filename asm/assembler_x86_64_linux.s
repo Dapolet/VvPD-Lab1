@@ -1,5 +1,5 @@
 # Linux x86-64 (System V AMD64 ABI), GNU Assembler (GAS), Intel-синтаксис.
-# Сборка: as assembler.s -o assembler.o && gcc assembler.o -o assembler
+# Сборка: as assembler_x86_64_linux.s -o assembler.o && gcc assembler.o -o assembler
 
     .intel_syntax noprefix
 
