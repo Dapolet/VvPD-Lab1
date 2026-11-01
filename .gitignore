@@ -1,0 +1,33 @@
+# Артефакты сборки C/C++
+c/main
+c/*.o
+cpp/main
+cpp/*.o
+asm/assembler
+asm/*.o
+
+# Java: байт-код воспроизводится из Main.java
+*.class
+
+# .NET: восстанавливается командой dotnet build/run
+bin/
+obj/
+
+# Node.js и TypeScript: ставятся/собираются заново
+node_modules/
+typescript/dist/
+
+# Rust: промежуточные и выходные файлы rustc
+target/
+rust/main
+
+# Python: кеш интерпретатора
+__pycache__/
+*.pyc
+
+# Файлы редакторов и ОС
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
