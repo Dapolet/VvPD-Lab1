@@ -57,6 +57,9 @@
 
 Собрать и запустить всё сразу: `bash scripts/run_all.sh`.
 
+На macOS порядок установки инструментов и команды сборки приведены в
+[MAC_OS.md](MAC_OS.md).
+
 ## Ожидаемый вывод
 
 Все 13 реализаций печатают одинаковые по смыслу три строки:
@@ -135,7 +138,7 @@ go/ rust/ bash/ prolog/
 asm/                assembler_x86_64_linux.s, assembler_arm64_macos.s, build.sh
 scripts/            run_all.sh, check_output.sh
 .github/workflows/  ci.yml
-README.md  CHANGELOG.md  REPORT.md  .gitignore
+README.md  MAC_OS.md  CHANGELOG.md  REPORT.md  .gitignore
 ```
 
 ## Непрерывная проверка (GitHub Actions)
